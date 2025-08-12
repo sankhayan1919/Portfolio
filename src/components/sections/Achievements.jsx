@@ -2,15 +2,15 @@ import React from "react";
 import { VerticalTimeline } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
 import styled from "styled-components";
-import { Achievements } from "../../data/constants";
+import { achievements } from "../../data/constants";
 import AchievementsCard from "../cards/AchievementsCard";
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-contnet: center;
+  justify-content: center;
   margin-top: 50px;
-  position: rlative;
+  position: relative;
   z-index: 1;
   align-items: center;
 `;
@@ -59,15 +59,14 @@ const Achievements = () => {
             marginBottom: "40px",
           }}
         >
-          My work Achievements as a software engineer and working on different
-          companies and projects.
+          I have done various courses and got certified in AI tools, Machine Learning with Python and Data Analytics.
         </Desc>
 
         <VerticalTimeline>
-          {Achievementss.map((Achievements, index) => (
+          {achievements.map((achievement, index) => (
             <AchievementsCard
-              key={`Achievements-${index}`}
-              Achievements={Achievements}
+              key={`achievement-${index}`}
+              achievement={achievement}
             />
           ))}
         </VerticalTimeline>

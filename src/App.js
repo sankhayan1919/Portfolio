@@ -4,7 +4,7 @@ import Navbar from "./components/Navbar";
 import { BrowserRouter } from "react-router-dom";
 import Hero from "./components/sections/Hero";
 import Skills from "./components/sections/Skills";
-import Experience from "./components/sections/Experience";
+import Achievements from "./components/sections/Achievements";
 import Education from "./components/sections/Education";
 import StartCanvas from "./components/canvas/Stars";
 import Projects from "./components/sections/Projects";
@@ -45,7 +45,7 @@ function App() {
             <Hero />
             <Wrapper>
               <Skills />
-              <Experience />
+              <Achievements />
             </Wrapper>
             <Projects />
             <Wrapper>

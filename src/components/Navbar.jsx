@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link as LinkR } from "react-router-dom";
 import styled, { useTheme } from "styled-components";
 import { Bio } from "../data/constants";
 import { MenuRounded } from "@mui/icons-material";
@@ -25,14 +24,6 @@ const NavbarContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   font-size: 1rem;
-`;
-const NavLogo = styled(LinkR)`
-  width: 80%;
-  padding: 0 6px;
-  font-weight: 500;
-  font-size: 18px;
-  text-decoration: none;
-  color: inherit;
 `;
 
 const NavItems = styled.ul`
@@ -132,7 +123,6 @@ const Navbar = () => {
   return (
     <Nav>
       <NavbarContainer>
-        <NavLogo to="/">GeeksForGeeks</NavLogo>
 
         <MobileIcon onClick={() => setIsOpen(!isOpen)}>
           <MenuRounded style={{ color: "inherit" }} />
@@ -141,7 +131,7 @@ const Navbar = () => {
         <NavItems>
           <NavLink href="#About">About</NavLink>
           <NavLink href="#Skills">Skills</NavLink>
-          <NavLink href="#Experience">Experience</NavLink>
+          <NavLink href="#Achievements">Achievements</NavLink>
           <NavLink href="#Projects">Projects</NavLink>
           <NavLink href="#Education">Education</NavLink>
         </NavItems>
@@ -154,8 +144,8 @@ const Navbar = () => {
             <NavLink onClick={() => setIsOpen(!isOpen)} href="#Skills">
               Skills
             </NavLink>
-            <NavLink onClick={() => setIsOpen(!isOpen)} href="#Experience">
-              Experience
+            <NavLink onClick={() => setIsOpen(!isOpen)} href="#Achievements">
+              Achievements
             </NavLink>
             <NavLink onClick={() => setIsOpen(!isOpen)} href="#Projects">
               Projects

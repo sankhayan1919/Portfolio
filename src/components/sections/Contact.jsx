@@ -1,6 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import emailjs from "@emailjs/browser";
+import { init } from '@emailjs/browser';
 
 const Container = styled.div`
   display: flex;
@@ -102,47 +103,97 @@ const ContactButton = styled.input`
   color: ${({ theme }) => theme.text_primary};
   font-size: 18px;
   font-weight: 600;
+  cursor: ${({ disabled }) => (disabled ? 'not-allowed' : 'pointer')};
+  opacity: ${({ disabled }) => (disabled ? 0.7 : 1)};
 `;
 
-const Contact = () => {
+export const Contact = () => {
   const form = useRef();
-  const handelSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState({ message: '', error: false });
+
+  useEffect(() => {
+    init(process.env.REACT_APP_EMAILJS_PUBLIC_KEY);
+  }, []);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    emailjs
-      .sendForm(
-        "service_tox7kqs",
-        "template_nv7k7mj",
-        form.current,
-        "SybVGsYS52j2TfLbi"
-      )
-      .then(
-        (result) => {
-          alert("Message Sent");
-          form.current.result();
-        },
-        (error) => {
-          alert(error);
-        }
+    setLoading(true);
+    setStatus({ message: '', error: false });
+
+    try {
+      const result = await emailjs.sendForm(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        form.current
       );
+
+      if (result.text === 'OK') {
+        setStatus({ message: 'Message sent successfully!', error: false });
+        form.current.reset();
+      }
+    } catch (error) {
+      console.error('Email sending failed:', error);
+      setStatus({
+        message: 'Failed to send message. Please try again.',
+        error: true
+      });
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
-    <Container id="Education">
+    <Container id="contact">
       <Wrapper>
         <Title>Contact</Title>
-        <Desc
-          style={{
-            marginBottom: "40px",
-          }}
-        >
+        <Desc style={{ marginBottom: "40px" }}>
           Feel free to reach out to me for any questions or opportunities!
         </Desc>
-        <ContactForm onSubmit={handelSubmit}>
+        <ContactForm as="form" ref={form} onSubmit={handleSubmit}>
           <ContactTitle>Email Me 🚀</ContactTitle>
-          <ContactInput placeholder="Your Email" name="from_email" />
-          <ContactInput placeholder="Your Name" name="from_name" />
-          <ContactInput placeholder="Subject" name="subject" />
-          <ContactInputMessage placeholder="Message" name="message" rows={4} />
-          <ContactButton type="submit" value="Send" />
+          <ContactInput
+            required
+            type="email"
+            placeholder="Your Email"
+            name="from_email"
+            disabled={loading}
+          />
+          <ContactInput
+            required
+            type="text"
+            placeholder="Your Name"
+            name="from_name"
+            disabled={loading}
+          />
+          <ContactInput
+            required
+            type="text"
+            placeholder="Subject"
+            name="subject"
+            disabled={loading}
+          />
+          <ContactInputMessage
+            required
+            placeholder="Message"
+            rows="4"
+            name="message"
+            disabled={loading}
+          />
+          {status.message && (
+            <Desc style={{ 
+              color: status.error ? '#ff4444' : '#44ff44',
+              margin: '10px 0',
+              fontSize: '14px'
+            }}>
+              {status.message}
+            </Desc>
+          )}
+          <ContactButton
+            type="submit"
+            value={loading ? "Sending..." : "Send"}
+            disabled={loading}
+          />
         </ContactForm>
       </Wrapper>
     </Container>
